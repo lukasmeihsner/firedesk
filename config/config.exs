@@ -56,11 +56,11 @@ config :logger, :console,
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
-config :helpdesk,
-  ash_apis: [Helpdesk.Support]
+config :firedesk,
+  ash_apis: [Firedesk.Support]
 
-config :helpdesk,
-  ecto_repos: [Helpdesk.Repo]
+config :firedesk,
+  ecto_repos: [Firedesk.Repo]
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
