@@ -28,4 +28,19 @@ defmodule Firedesk.Support.Representative do
     # on the module name of this resource and that the source attribute is `id`.
     has_many :tickets, Firedesk.Support.Ticket
   end
+
+  aggregates do
+    # The first argument here is the name of the aggregate
+    # The second is the relationship
+    count :total_tickets, :tickets
+
+    count :open_tickets, :tickets do
+      # Here we add a filter over the data that we are aggregating
+      filter expr(status == :open)
+    end
+
+    count :closed_tickets, :tickets do
+      filter expr(status == :closed)
+    end
+  end
 end

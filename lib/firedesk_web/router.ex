@@ -20,6 +20,16 @@ defmodule FiredeskWeb.Router do
     get "/", PageController, :home
   end
 
+  scope "/app", FiredeskWeb do
+    pipe_through [:browser]
+
+    live_session :default, on_mount: FiredeskWeb.RouteAssigns do
+      live "/dashboard", DashboardLive
+      live "/tickets", TicketsLive
+      live "/analytics", AnalyticsLive
+    end
+  end
+
   # Other scopes may use custom stacks.
   # scope "/api", FiredeskWeb do
   #   pipe_through :api

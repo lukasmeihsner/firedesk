@@ -1,3 +1,48 @@
+<div class="flex-no-wrap flex h-screen bg-slate-400 relative">
+  <div
+    class="absolute top-5 right-5 dark:bg-slate-900 rounded-full p-2"
+    phx-click={JS.remove_class("dark", to: "html")}
+  >
+    <Heroicons.moon solid class="h-5 w-5 fill-slate-100" />
+  </div>
+  <div
+    class="dark:hidden  absolute top-5 right-5 bg-slate-100 rounded-full p-2"
+    phx-click={JS.add_class("dark", to: "html")}
+  >
+    <Heroicons.sun solid class="h-5 w-5" />
+  </div>
+
+  <aside class="bg-slate-100 dark:bg-slate-900 p-5">
+    <div class="flex-no-wrap flex items-center gap-4">
+      <Heroicons.fire solid class="h-10 w-10 fill-red-600" />
+      <div class="text-4xl text-gray-900 dark:text-gray-100">Firedesk</div>
+    </div>
+    <nav class="inline-grid grid-cols-1 mt-20 ml-5 gap-4">
+      <.nav_item
+        path={~p"/app/dashboard"}
+        label="Dashboard"
+        icon={:squares_2x2}
+        current_path={@current_path}
+      />
+      <.nav_item
+        path={~p"/app/tickets"}
+        label="Tickets"
+        icon={:ticket}
+        current_path={@current_path}
+      />
+      <.nav_item
+        path={~p"/app/analytics"}
+        label="Analytics"
+        icon={:chart_bar}
+        current_path={@current_path}
+      />
+    </nav>
+  </aside>
+  <main>
+    <%= @inner_content %>
+  </main>
+</div>
+<%!-- 
 <header class="px-4 sm:px-6 lg:px-8">
   <div class="flex items-center justify-between border-b border-zinc-100 py-3">
     <div class="flex items-center gap-4">
@@ -48,8 +93,8 @@
       phx-disconnected={show("#disconnected")}
       phx-connected={hide("#disconnected")}
     >
-      Attempting to reconnect <Heroicons.arrow_path class="ml-1 w-3 h-3 inline animate-spin" />
+      Attempting to reconnect <Heroicons.arrow_path class="ml-1 inline h-3 w-3 animate-spin" />
     </.flash>
     <%= @inner_content %>
   </div>
-</main>
+</main> --%>

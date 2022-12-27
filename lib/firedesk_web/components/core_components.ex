@@ -11,6 +11,7 @@ defmodule FiredeskWeb.CoreComponents do
   """
   use Phoenix.Component
 
+  alias Phoenix.LiveView.HTMLEngine
   alias Phoenix.LiveView.JS
   import FiredeskWeb.Gettext
 
@@ -87,13 +88,13 @@ defmodule FiredeskWeb.CoreComponents do
                   </p>
                 </header>
                 <%= render_slot(@inner_block) %>
-                <div :if={@confirm != [] or @cancel != []} class="ml-6 mb-4 flex items-center gap-5">
+                <div :if={@confirm != [] or @cancel != []} class="mb-4 ml-6 flex items-center gap-5">
                   <.button
                     :for={confirm <- @confirm}
                     id={"#{@id}-confirm"}
                     phx-click={@on_confirm}
                     phx-disable-with
-                    class="py-2 px-3"
+                    class="px-3 py-2"
                   >
                     <%= render_slot(confirm) %>
                   </.button>
@@ -191,7 +192,7 @@ defmodule FiredeskWeb.CoreComponents do
   def simple_form(assigns) do
     ~H"""
     <.form :let={f} for={@for} as={@as} {@rest}>
-      <div class="space-y-8 bg-white mt-10">
+      <div class="mt-10 space-y-8 bg-white">
         <%= render_slot(@inner_block, f) %>
         <div :for={action <- @actions} class="mt-2 flex items-center justify-between gap-6">
           <%= render_slot(action, f) %>
@@ -303,7 +304,7 @@ defmodule FiredeskWeb.CoreComponents do
       <select
         id={@id}
         name={@name}
-        class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-zinc-500 focus:border-zinc-500 sm:text-sm"
+        class="mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-2 shadow-sm focus:border-zinc-500 focus:outline-none focus:ring-zinc-500 sm:text-sm"
         multiple={@multiple}
         {@rest}
       >
@@ -386,7 +387,7 @@ defmodule FiredeskWeb.CoreComponents do
 
   def error(assigns) do
     ~H"""
-    <p class="phx-no-feedback:hidden mt-3 flex gap-3 text-sm leading-6 text-rose-600">
+    <p class="mt-3 flex gap-3 text-sm leading-6 text-rose-600 phx-no-feedback:hidden">
       <Heroicons.exclamation_circle mini class="mt-0.5 h-5 w-5 flex-none fill-rose-500" />
       <%= render_slot(@inner_block) %>
     </p>
@@ -441,10 +442,10 @@ defmodule FiredeskWeb.CoreComponents do
   def table(assigns) do
     ~H"""
     <div id={@id} class="overflow-y-auto px-4 sm:overflow-visible sm:px-0">
-      <table class="mt-11 w-[40rem] sm:w-full">
+      <table class="w-[40rem] mt-11 sm:w-full">
         <thead class="text-left text-[0.8125rem] leading-6 text-zinc-500">
           <tr>
-            <th :for={col <- @col} class="p-0 pb-4 pr-6 font-normal"><%= col[:label] %></th>
+            <th :for={col <- @col} class="p-0 pr-6 pb-4 font-normal"><%= col[:label] %></th>
             <th class="relative p-0 pb-4"><span class="sr-only"><%= gettext("Actions") %></span></th>
           </tr>
         </thead>
@@ -452,7 +453,7 @@ defmodule FiredeskWeb.CoreComponents do
           <tr
             :for={row <- @rows}
             id={"#{@id}-#{Phoenix.Param.to_param(row)}"}
-            class="relative group hover:bg-zinc-50"
+            class="group relative hover:bg-zinc-50"
           >
             <td
               :for={{col, i} <- Enum.with_index(@col)}
@@ -460,8 +461,8 @@ defmodule FiredeskWeb.CoreComponents do
               class={["p-0", @row_click && "hover:cursor-pointer"]}
             >
               <div :if={i == 0}>
-                <span class="absolute h-full w-4 top-0 -left-4 group-hover:bg-zinc-50 sm:rounded-l-xl" />
-                <span class="absolute h-full w-4 top-0 -right-4 group-hover:bg-zinc-50 sm:rounded-r-xl" />
+                <span class="absolute top-0 -left-4 h-full w-4 group-hover:bg-zinc-50 sm:rounded-l-xl" />
+                <span class="absolute top-0 -right-4 h-full w-4 group-hover:bg-zinc-50 sm:rounded-r-xl" />
               </div>
               <div class="block py-4 pr-6">
                 <span class={["relative", i == 0 && "font-semibold text-zinc-900"]}>
@@ -469,7 +470,7 @@ defmodule FiredeskWeb.CoreComponents do
                 </span>
               </div>
             </td>
-            <td :if={@action != []} class="p-0 w-14">
+            <td :if={@action != []} class="w-14 p-0">
               <div class="relative whitespace-nowrap py-4 text-right text-sm font-medium">
                 <span
                   :for={action <- @action}
@@ -513,6 +514,55 @@ defmodule FiredeskWeb.CoreComponents do
     """
   end
 
+  attr :path, :any, required: true
+  attr :label, :string, required: true
+  attr :icon, :atom, required: true
+  attr :current_path, :string
+
+  @doc """
+  Render an navigation item
+
+  ## Examples
+
+        <.nav_item path={~p"/app/dashboard"} label="Dashboard" icon={:squares_2x2} />
+
+
+  """
+  def nav_item(assigns) do
+    selected = assigns.current_path == assigns.path
+
+    assigns = assign(assigns, selected: selected)
+
+    ~H"""
+    <div class={[
+      "place-self-start group flex flex-nowrap items-center justify-start gap-4 hover:border-b-red-600 hover:border-b",
+      @selected && "border-b border-b-red-600"
+    ]}>
+      <%= HTMLEngine.component(
+        Function.capture(Heroicons, @icon, 1),
+        %{
+          solid: true,
+          class: [
+            "h-5 w-5 dark:fill-gray-100 group-hover:fill-red-600",
+            @selected && "fill-red-600",
+            !@selected && "fill-gray-900"
+          ]
+        },
+        {__ENV__.module, __ENV__.function, __ENV__.file, __ENV__.line}
+      ) %>
+
+      <div class={[
+        "text-xl text-gray-900 dark:text-gray-100 group-hover:text-red-600",
+        @selected && "text-red-600 font-semibold"
+      ]}>
+        <.link navigate={@path}>
+          <%= @label %>
+        </.link>
+      </div>
+    </div>
+    """
+  end
+
   @doc """
   Renders a back navigation link.
 
@@ -530,7 +580,7 @@ defmodule FiredeskWeb.CoreComponents do
         navigate={@navigate}
         class="text-sm font-semibold leading-6 text-zinc-900 hover:text-zinc-700"
       >
-        <Heroicons.arrow_left solid class="w-3 h-3 stroke-current inline" />
+        <Heroicons.arrow_left solid class="inline h-3 w-3 stroke-current" />
         <%= render_slot(@inner_block) %>
       </.link>
     </div>
