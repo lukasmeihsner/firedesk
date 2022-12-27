@@ -543,17 +543,14 @@ defmodule FiredeskWeb.CoreComponents do
         %{
           solid: true,
           class: [
-            "h-5 w-5 dark:fill-gray-100 group-hover:fill-red-600",
-            @selected && "fill-red-600",
-            !@selected && "fill-gray-900"
+            "h-5 w-5 dark:fill-gray-100 group-hover:fill-red-600"
           ]
         },
         {__ENV__.module, __ENV__.function, __ENV__.file, __ENV__.line}
       ) %>
 
       <div class={[
-        "text-xl text-gray-900 dark:text-gray-100 group-hover:text-red-600",
-        @selected && "text-red-600 font-semibold"
+        "text-xl text-gray-900 dark:text-gray-100 group-hover:text-red-600"
       ]}>
         <.link navigate={@path}>
           <%= @label %>
