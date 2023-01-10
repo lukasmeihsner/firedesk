@@ -49,8 +49,9 @@ defmodule Firedesk.MixProject do
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"},
       {:ash, "~> 2.4"},
-      {:elixir_sense, github: "elixir-lsp/elixir_sense", only: [:dev, :test]},
       {:ash_postgres, "~> 1.2"},
+      {:ash_phoenix, "~> 1.2"},
+      {:elixir_sense, github: "elixir-lsp/elixir_sense", only: [:dev, :test]},
       {:tailwind_formatter, "~> 0.3.1", only: :dev, runtime: false}
     ]
   end

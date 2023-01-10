@@ -80,7 +80,10 @@ defmodule FiredeskWeb.CoreComponents do
               </div>
               <div id={"#{@id}-content"}>
                 <header :if={@title != []}>
-                  <h1 id={"#{@id}-title"} class="text-lg font-semibold leading-8 text-zinc-800">
+                  <h1
+                    id={"#{@id}-title"}
+                    class="text-lg font-semibold leading-8 text-zinc-800 dark:text-zinc-100"
+                  >
                     <%= render_slot(@title) %>
                   </h1>
                   <p :if={@subtitle != []} class="mt-2 text-sm leading-6 text-zinc-600">
@@ -223,6 +226,7 @@ defmodule FiredeskWeb.CoreComponents do
       class={[
         "phx-submit-loading:opacity-75 rounded-lg bg-zinc-900 hover:bg-zinc-700 py-2 px-3",
         "text-sm font-semibold leading-6 text-white active:text-white/80",
+        "dark:ring-1 dark:ring-zinc-300 dark:hover:bg-zinc-900 dark:hover:ring-2",
         @class
       ]}
       {@rest}
@@ -407,7 +411,7 @@ defmodule FiredeskWeb.CoreComponents do
     ~H"""
     <header class={[@actions != [] && "flex items-center justify-between gap-6", @class]}>
       <div>
-        <h1 class="text-lg font-semibold leading-8 text-zinc-800">
+        <h1 class="text-lg font-semibold leading-8 text-zinc-800  dark:text-zinc-100">
           <%= render_slot(@inner_block) %>
         </h1>
         <p :if={@subtitle != []} class="mt-2 text-sm leading-6 text-zinc-600">
@@ -443,17 +447,17 @@ defmodule FiredeskWeb.CoreComponents do
     ~H"""
     <div id={@id} class="overflow-y-auto px-4 sm:overflow-visible sm:px-0">
       <table class="w-[40rem] mt-11 sm:w-full">
-        <thead class="text-left text-[0.8125rem] leading-6 text-zinc-500">
+        <thead class="text-left text-[0.8125rem] leading-6 text-zinc-500 dark:text-zinc-300">
           <tr>
             <th :for={col <- @col} class="p-0 pr-6 pb-4 font-normal"><%= col[:label] %></th>
             <th class="relative p-0 pb-4"><span class="sr-only"><%= gettext("Actions") %></span></th>
           </tr>
         </thead>
-        <tbody class="relative divide-y divide-zinc-100 border-t border-zinc-200 text-sm leading-6 text-zinc-700">
+        <tbody class="relative divide-y divide-zinc-100 border-t border-zinc-200 text-sm leading-6 text-zinc-700 dark:text-zinc-100">
           <tr
             :for={row <- @rows}
             id={"#{@id}-#{Phoenix.Param.to_param(row)}"}
-            class="group relative hover:bg-zinc-50"
+            class="group relative hover:bg-zinc-50  dark:hover:bg-slate-600"
           >
             <td
               :for={{col, i} <- Enum.with_index(@col)}
@@ -461,11 +465,11 @@ defmodule FiredeskWeb.CoreComponents do
               class={["p-0", @row_click && "hover:cursor-pointer"]}
             >
               <div :if={i == 0}>
-                <span class="absolute top-0 -left-4 h-full w-4 group-hover:bg-zinc-50 sm:rounded-l-xl" />
-                <span class="absolute top-0 -right-4 h-full w-4 group-hover:bg-zinc-50 sm:rounded-r-xl" />
+                <span class="absolute top-0 -left-4 h-full w-4 group-hover:bg-zinc-50 sm:rounded-l-xl dark:group-hover:bg-slate-600" />
+                <span class="absolute top-0 -right-4 h-full w-4 group-hover:bg-zinc-50 sm:rounded-r-xl dark:group-hover:bg-slate-600" />
               </div>
               <div class="block py-4 pr-6">
-                <span class={["relative", i == 0 && "font-semibold text-zinc-900"]}>
+                <span class={["relative", i == 0 && "font-semibold text-zinc-900 dark:text-zinc-50"]}>
                   <%= render_slot(col, row) %>
                 </span>
               </div>
@@ -474,7 +478,7 @@ defmodule FiredeskWeb.CoreComponents do
               <div class="relative whitespace-nowrap py-4 text-right text-sm font-medium">
                 <span
                   :for={action <- @action}
-                  class="relative ml-4 font-semibold leading-6 text-zinc-900 hover:text-zinc-700"
+                  class="relative ml-4 font-semibold leading-6 text-zinc-900 hover:text-zinc-700 dark:text-zinc-100 dark:hover:text-zinc-50"
                 >
                   <%= render_slot(action, row) %>
                 </span>

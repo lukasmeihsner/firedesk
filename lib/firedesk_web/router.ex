@@ -21,11 +21,19 @@ defmodule FiredeskWeb.Router do
   end
 
   scope "/app", FiredeskWeb do
-    pipe_through [:browser]
+    pipe_through :browser
 
     live_session :default, on_mount: FiredeskWeb.RouteAssigns do
+      live "/", DashboardLive
       live "/dashboard", DashboardLive
-      live "/tickets", TicketsLive
+
+      live "/tickets", TicketLive.Index, :index
+      live "/tickets/new", TicketLive.Index, :new
+      live "/tickets/:id/edit", TicketLive.Index, :edit
+
+      live "/tickets/:id", TicketLive.Show, :show
+      live "/tickets/:id/show/edit", TicketLive.Show, :edit
+
       live "/analytics", AnalyticsLive
     end
   end

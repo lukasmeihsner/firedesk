@@ -1,4 +1,5 @@
-<div class="flex-no-wrap flex h-screen bg-slate-400 relative">
+<div class="flex-no-wrap flex h-screen relative bg-slate-50 dark:bg-slate-900">
+  <%!-- Toggle --%>
   <div
     class="absolute top-5 right-5 dark:bg-slate-900 rounded-full p-2"
     phx-click={JS.remove_class("dark", to: "html")}
@@ -11,8 +12,8 @@
   >
     <Heroicons.sun solid class="h-5 w-5" />
   </div>
-
-  <aside class="bg-slate-100 dark:bg-slate-900 p-5">
+  <%!-- Content --%>
+  <div class="bg-slate-50 dark:bg-slate-900 p-5 border-r border-r-slate-200 dark:border-r-slate-50">
     <div class="flex-no-wrap flex items-center gap-4">
       <Heroicons.fire solid class="h-10 w-10 fill-red-600" />
       <div class="text-4xl text-gray-900 dark:text-gray-100">Firedesk</div>
@@ -37,8 +38,8 @@
         current_path={@current_path}
       />
     </nav>
-  </aside>
-  <main>
+  </div>
+  <main class="p-10 pt-24 container">
     <%= @inner_content %>
   </main>
 </div>

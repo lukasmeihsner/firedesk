@@ -3,7 +3,7 @@ defmodule FiredeskWeb.DashboardLive do
 
   def render(assigns) do
     ~H"""
-    <%= @current_path %>
+    <h1>Dashboard</h1>
     """
   end
 end
