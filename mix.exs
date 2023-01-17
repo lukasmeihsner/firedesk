@@ -52,7 +52,9 @@ defmodule Firedesk.MixProject do
       {:ash_postgres, "~> 1.2"},
       {:ash_phoenix, "~> 1.2"},
       {:elixir_sense, github: "elixir-lsp/elixir_sense", only: [:dev, :test]},
-      {:tailwind_formatter, "~> 0.3.1", only: :dev, runtime: false}
+      {:tailwind_formatter, "~> 0.3.1", only: :dev, runtime: false},
+      {:ash_authentication, "~> 3.6.1"},
+      {:ash_authentication_phoenix, "~> 1.4"}
     ]
   end
 
